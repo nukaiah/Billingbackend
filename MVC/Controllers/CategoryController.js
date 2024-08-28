@@ -4,6 +4,9 @@ const { sendResponse, sendErrorResponse } = require('../Middlewares/Response');
 const checkAuth = require('../Middlewares/CheckAuth');
 const categorySchema = require('../Models/CategoryModels');
 const categoryController = express.Router();
+const upload = require('../Middlewares/multer');
+const cloudinary = require("../Middlewares/Cloudinary");
+
 
 categoryController.get('/getAll', checkAuth, async (req, res, next) => {
     try {
@@ -26,20 +29,24 @@ categoryController.get('/getAll', checkAuth, async (req, res, next) => {
 });
 
 
-categoryController.post('/add', checkAuth, async (req, res, next) => {
+categoryController.post('/add', checkAuth,upload.fields([{ name: 'image' }]), async (req, res, next) => {
     try {
-        const categoryData = new categorySchema({
-            _id: new mongoose.Types.ObjectId,
-            categoryName: req.body.categoryName,
-            categoryImage: "cat.png",
-            merchantId: req._id,
-        });
-        var result = await categoryData.save();
-        if (result) {
-            sendResponse(res, true, "Sucessfully Added Category", result);
-        }
-        else {
-            sendResponse(res, false, "Failed to Added Category", result);
+        if (req.files && req.files['image']) {
+            console.log(req.files['image'][0].path);
+            categoryImage = (await cloudinary.uploader.upload(req.files['image'][0].path, { folder: 'Category/' })).url;
+            const categoryData = new categorySchema({
+                _id: new mongoose.Types.ObjectId,
+                categoryName: req.body.categoryName,
+                categoryImage: categoryImage,
+                merchantId: req._id,
+            });
+            var result = await categoryData.save();
+            if (result) {
+                sendResponse(res, true, "Sucessfully Added Category", result);
+            }
+            else {
+                sendResponse(res, false, "Failed to Added Category", result);
+            }
         }
     } catch (error) {
         console.log(error);

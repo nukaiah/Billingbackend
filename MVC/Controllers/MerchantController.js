@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const merchantController = express.Router();
 const {sendResponse,sendErrorResponse} = require('../Middlewares/Response'); 
 const merchantSchema = require('../Models/MerchantModels');
-const { JsonWebTokenError } = require('jsonwebtoken');
 
 merchantController.post("/register",async(req,res,next)=>{
     try {
