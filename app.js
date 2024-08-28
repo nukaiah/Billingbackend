@@ -16,7 +16,16 @@ mongoose.connect(uri)
   });
 
 
-app.use(cors());
+  app.use(cors({
+    origin: '*', // Replace '*' with your Flutter web app's domain in production
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
+  
+  // Middleware to handle preflight requests for all routes
+  app.options('*', cors());
+  
+  
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
