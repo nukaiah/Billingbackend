@@ -31,9 +31,8 @@ categoryController.get('/getAll', checkAuth, async (req, res, next) => {
 
 categoryController.post('/add', checkAuth, upload.fields([{ name: 'image' }]), async (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
 
     try {
         if (req.files && req.files['image']) {
