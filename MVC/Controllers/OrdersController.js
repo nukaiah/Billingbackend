@@ -31,6 +31,7 @@ orderController.post('/add', checkAuth, async (req, res, next) => {
             merchantId: req._id,
             paymentType: req.body.paymentType
         });
+        console.log(orderData);
         const result = await orderData.save();
         if (result) {
             sendResponse(res, true, "Item Placed", result);

@@ -27,6 +27,10 @@ const orderSchema = new mongoose.Schema({
                 count: {
                     type: Number,
                     required: true
+                },
+                itemCost:{
+                    type:Number,
+                    required:true
                 }
             }
         ],
