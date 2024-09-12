@@ -32,6 +32,10 @@ const merchantSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    loginStatus:{
+        type:Boolean,
+        required: true
+    },
     userType:{
         type:Number,
         required:true
