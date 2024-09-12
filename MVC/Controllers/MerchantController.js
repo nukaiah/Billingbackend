@@ -100,11 +100,7 @@ merchantController.post("/login", async (req, res, next) => {
             sendResponse(res, false, "No User found with the email", {});
         }
         else {
-            if (result.loginStatus) {
-                sendResponse(res, false, "Already logged in elsewhere. Please log out first.", {});
-            }
-            else {
-                const passwordMatched = await bcrypt.compare(req.body.password, result.password);
+            const passwordMatched = await bcrypt.compare(req.body.password, result.password);
                 if (passwordMatched) {
                     const token = jwt.sign({
                         _id: result._id,
@@ -121,7 +117,28 @@ merchantController.post("/login", async (req, res, next) => {
                     sendResponse(res, false, "Password is not matched", {});
                 }
 
-            }
+            // if (result.loginStatus) {
+            //     sendResponse(res, false, "Already logged in elsewhere. Please log out first.", {});
+            // }
+            // else {
+            //     const passwordMatched = await bcrypt.compare(req.body.password, result.password);
+            //     if (passwordMatched) {
+            //         const token = jwt.sign({
+            //             _id: result._id,
+            //             userType: result.userType
+            //         }, 'sensitive data', { expiresIn: "24h" });
+            //         res.status(200).json({
+            //             status: true,
+            //             message: "Logged in successfully",
+            //             token: token,
+            //             data: result
+            //         });
+            //     }
+            //     else {
+            //         sendResponse(res, false, "Password is not matched", {});
+            //     }
+
+            // }
         }
     } catch (error) {
         sendErrorResponse(res, false, "Something went wrong, try again!", {});
